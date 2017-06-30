@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
-    <script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+    <script src="js/react.min.js"></script>
+    <script src="js/react-dom.min.js"></script>
     <script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
 
 </head>
@@ -12,27 +12,49 @@
 
    <div id="example"></div>
    <div id="container"></div>
-
    <script type="text/babel">
        var TestClickComponent=React.createClass({
+           handleClick:function (event) {
+               //索引到组件 ReactDOM大写字母注意！！！！
+              var tipE= ReactDOM.findDOMNode(this.refs.tip);
+              alert(tipE.style.display);
+              if(tipE.style.display==='none'){
+                    tipE.style.display='inline';
+              }
+              else
+                  tipE.style.display='none';
+              //阻止默认方法
+               event.stopPropagation();
+               event.preventDefault();
+           },
            render:function(){
                return(
                        <div>
-                           <button>显示|隐藏</button><span>测试点击</span>
+
+                           <button onClick={this.handleClick}>显示|隐藏</button><span ref="tip">测试点击</span>
                        </div>
                );
            }
        });
        var TestInputComponent=React.createClass({
+           //初始化
            getInitialState:function () {
                return{
                    inputContent:""
                }
            },
+           changeHandler:function (event) {
+               this.setState({
+                   inputContent:event.target.value
+               });
+               event.preventDefault();
+               event.stopPropagation();
+           },
            render:function () {
                return(
+                   //不包div会返回两个结果 样式结构分离（上帝的归上帝，凯撒的归凯撒）
                        <div>
-                           <input type="text/"/>
+                           <input type="text/" onChange={this.changeHandler}/>
                            <span>{this.state.inputContent}</span>
                        </div>
                );
