@@ -9,37 +9,72 @@
 
 </head>
 <body>
-    <div id="container"></div>
 
-    <script type="text/jsx">
-        var TestClickComponent=React.createClass({
-            render:function(){
-                return(
-                    <div>
-                        <button>显示|隐藏</button><span>测试点击</span>
-                    </div>
-                );
-            }
-        });
-        var TestInputComponent=React.createClass({
-            getInitialState:function () {
-                return{
-                    inputContent:""
-                }
-            },
-            render:function () {
-                return(
-                    <div>
-                        <input type="text/"/>
-                        <span>{this.state.inputContent}</span>
-                    </div>
-                );
-            }
-        });
-        React.createElement(<div>
-            <TestClickComponent/>
-            <TestInputComponent/>
-        </div>,document.getElementById('container'));
-    </script>
+   <div id="example"></div>
+   <div id="container"></div>
+
+   <script type="text/babel">
+       var TestClickComponent=React.createClass({
+           render:function(){
+               return(
+                       <div>
+                           <button>显示|隐藏</button><span>测试点击</span>
+                       </div>
+               );
+           }
+       });
+       var TestInputComponent=React.createClass({
+           getInitialState:function () {
+               return{
+                   inputContent:""
+               }
+           },
+           render:function () {
+               return(
+                       <div>
+                           <input type="text/"/>
+                           <span>{this.state.inputContent}</span>
+                       </div>
+               );
+           }
+       });
+       ReactDOM.render(<div>
+           <TestClickComponent/>
+           <TestInputComponent/>
+       </div>,document.getElementById('container'));
+       var Hello = React.createClass({
+           getInitialState: function () {
+               return {
+                   opacity: 1.0
+               };
+           },
+
+           componentDidMount: function () {
+               this.timer = setInterval(function () {
+                   var opacity = this.state.opacity;
+                   opacity -= .05;
+                   if (opacity < 0.1) {
+                       opacity = 1.0;
+                   }
+                   this.setState({
+                       opacity: opacity
+                   });
+               }.bind(this), 100);
+           },
+
+           render: function () {
+               return (
+                       <div style={{opacity: this.state.opacity}}>
+                           Hello {this.props.name}
+                       </div>
+               );
+           }
+       });
+
+       ReactDOM.render(
+               <Hello name="world"/>,
+           document.getElementById('example')
+       );
+   </script>
 </body>
 </html>
